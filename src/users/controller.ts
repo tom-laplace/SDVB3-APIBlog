@@ -42,4 +42,47 @@ export const register = async (req: Request, res: Response) => {
     return res.status(200).json(newUser);
 }
 
-export default { login, register };
+
+//controller retrieve all users
+export const getAll = async (req: Request, res: Response) => {
+    const users = await User.find();
+
+    return res.status(200).json(users);
+}
+
+// controller retrieve one user
+export const getOne = async (req: Request, res: Response) => {
+    const { id } = req.params;
+
+    const user = await User.findById(id);
+
+    if (!user) {
+        return res.status(400).json({ message: 'User not found' });
+    }
+
+    return res.status(200).json(user);
+}
+
+// controller delete one user
+export const remove = async (req: Request, res: Response) => {
+    const { id } = req.params;
+
+    const user = await User.findById(id);
+
+    if (!user) {
+        return res.status(400).json({ message: 'User not found' });
+    }
+
+    await user.remove();
+
+    return res.status(200).json({ message: 'User deleted' });
+}
+
+
+export default {
+    login,
+    register,
+    getAll,
+    getOne,
+    remove,
+};
