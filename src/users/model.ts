@@ -5,7 +5,6 @@ import { Schema, model, Document } from 'mongoose';
 export interface User extends Document {
     email: string;
     password: string;
-    username?: string;
     role: string;
 }
 
@@ -20,12 +19,7 @@ const UserSchema = new Schema({
         type: String,
         required: true,
     },
-
-    username: {
-        type: String,
-        required: false,
-    },
-
+    
     role: {
         type: String,
         required: true,

@@ -3,6 +3,7 @@ import connectToMongoDB from "./db/db-connector";
 import userRouter from "./users/router";
 import postsRouter from "./posts/router";
 import commentaireRouter from "./commentaires/router";
+import profileRouter from "./profile/router";
 
 
 connectToMongoDB();
@@ -13,6 +14,7 @@ app.use(express.json());
 app.use("/users", userRouter);
 app.use("/posts", postsRouter);
 app.use("/commentaires", commentaireRouter);
+app.use("/profile", profileRouter);
 
 app.get("/", (req, res) => {
   res.send("Hello World!");

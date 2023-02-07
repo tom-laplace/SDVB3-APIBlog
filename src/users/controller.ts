@@ -116,7 +116,6 @@ export const remove = async (req: Request, res: Response) => {
     return res.status(200).json({ message: 'User deleted' });
 }
 
-
 export default {
     login,
     register,

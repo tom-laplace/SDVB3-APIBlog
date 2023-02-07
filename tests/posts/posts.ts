@@ -13,7 +13,6 @@ describe("Blog Posts Controller", () => {
 
   beforeEach(async () => {
     testUser = await User.create({
-      username: "testuser",
       email: "test@test.com",
       password: "testpassword",
     });
