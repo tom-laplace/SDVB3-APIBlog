@@ -1,33 +1,81 @@
 import { Request, Response } from 'express';
 import User from './model';
 import bcrypt from 'bcryptjs';
+import passport from 'passport';
+import jwt from 'jsonwebtoken';
+import dotenv from 'dotenv';
+import Profile from '../profile/model';
 
-////////////////////////////////////////
-// Controller pt1 : authentification //
-//////////////////////////////////////
+dotenv.config();
+
+//////////////////////////////////////////////////////
+// Controller pt1 : passport strategy and function //
+////////////////////////////////////////////////////
+
+const localStrategy = require('passport-local').Strategy;
+
+passport.use(
+    new localStrategy(
+      {
+        usernameField: "email",
+        passwordField: "password",
+      },
+      function (email: string, password: string, done: any) {
+        User.findOne({ email: email }, function (err: any, user: any) {
+          if (err) {
+            return done(err);
+          }
+          if (!user) {
+            return done(null, false, { message: "Incorrect email." });
+          }
+          if (!user.validPassword(password)) {
+            return done(null, false, { message: "Incorrect password." });
+          }
+          return done(null, user);
+        });
+      }
+    )
+  );
+
+  const getUserProfile = async (token: string) => {
+    try {
+      const decoded = jwt.verify(token, process.env.JWT_SECRET || '');
+      if (typeof decoded === "object" && "id" in decoded) {
+        const userId = decoded.id;
+      
+        // Use userId to find the corresponding user profile in your database
+        const userProfile = await Profile.findOne({ user: userId });
+  
+        return userProfile;
+      } else {
+        return null;
+      }
+    } catch (error) {
+      return null;
+    }
+  };
+
+
+//////////////////////////////////////////////////////////////////
+// Controller pt2 : login, register, updateRole and get profile//
+////////////////////////////////////////////////////////////////
 
 export const login = async (req: Request, res: Response) => {
-    const { email, password } = req.body;
-
-    const user = await User.findOne({ email });
-
-    if(!email || !password) {
-        return res.status(400).json({ message: 'Email and password are required' });
-    }
-
-    if (!user) {
-        return res.status(400).json({ message: 'User not found' });
-    }
-
-    bcrypt.compare(password, user.password).then((result) => {
-        if (!result) {
-            return res.status(400).json({ message: 'Password is incorrect' });
-        } else {
-            return "Hash is correct";
+    passport.authenticate("local", { session: false }, function (err, user, info) {
+        if (err || !user) {
+          return res.status(400).json({
+            message: "Something is not right",
+            user: user,
+          });
         }
-    });
-
-    return res.status(200).json(user);
+        req.login(user, { session: false }, function (err) {
+          if (err) {
+            res.send(err);
+          }
+        const token = jwt.sign(user.toJSON(), process.env.JWT_SECRET || '');
+          return res.json({ user, token });
+        });
+      })(req, res);
 }
 
 export const register = async (req: Request, res: Response) => {
@@ -52,11 +100,9 @@ export const register = async (req: Request, res: Response) => {
         await User.create({
             email,
             password: hash,
-            username,
         })
+        return res.status(200).json({ message: 'User created', user: { email } });
     });
-
-    return res.status(200).json({ message: 'User created'});
 }
 
 export const updateRole = async (req: Request, res: Response) => {
@@ -79,9 +125,20 @@ export const updateRole = async (req: Request, res: Response) => {
     return res.status(200).json(user);
 }
 
+export const getProfile = async (req: Request, res: Response) => {
+    const token = req.headers.authorization?.split(' ')[1];
+    const userProfile = await getUserProfile(token || '');
+
+    if (!userProfile) {
+        return res.status(404).json({ message: 'User not found' });
+    }
+
+    return res.status(200).json(userProfile);
+}
+
 
 ////////////////////////////////////////
-// Controller pt2: basic user routes //
+// Controller pt3: basic user routes //
 //////////////////////////////////////
 
 export const getAll = async (req: Request, res: Response) => {

@@ -61,22 +61,9 @@ export const removeProfile = async (req: Request, res: Response) => {
     return res.status(200).json({ message: 'Profile removed' });
 }
 
-export const getProfileFromUser = async (req: Request, res: Response) => {
-    const { id } = req.params;
-
-    const profile = await Profile.findOne({ user: id });
-
-    if (!profile) {
-        return res.status(400).json({ message: 'Profile not found' });
-    }
-
-    return res.status(200).json(profile);
-}
-
 export default {
     createProfile,
     updateProfile,
     getProfile,
     removeProfile,
-    getProfileFromUser,
 };

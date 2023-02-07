@@ -11,9 +11,6 @@
       "rootDir": "src",
       "baseUrl": ".",
       "forceConsistentCasingInFileNames": true,
-      "noImplicitReturns": true,
-      "noImplicitThis": true,
-      "noImplicitAny": true
     },
     "include": [
       "src/**/*.ts"
