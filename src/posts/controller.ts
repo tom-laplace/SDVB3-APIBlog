@@ -3,7 +3,7 @@
 
 import { Request, Response } from 'express';
 import Post from './model';
-import User from 'src/users/model';
+import User from '../users/model';
 
 // controller get all blog posts
 export const getAll = async (req: Request, res: Response) => {

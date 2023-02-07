@@ -13,5 +13,13 @@ services:
     volumes:
       - mongo-data:/data/db
 
+  # blog-api:
+  #   image: api-blog
+  #   restart: always
+  #   ports:
+  #     - 4005:4005
+  #   depends_on:
+  #     - mongo
+
 volumes:
   mongo-data: {}
