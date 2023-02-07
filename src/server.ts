@@ -21,3 +21,5 @@ app.get("/", (req, res) => {
 app.listen(4004, () => {
   console.log("Listening on port 4004");
 });
+
+export default app;

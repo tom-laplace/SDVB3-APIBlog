@@ -41,7 +41,7 @@ export const create = async (req: Request, res: Response) => {
     const newPost = await Post.create({ title, content, auteur });
 
     // return post
-    return res.status(200).json(newPost);
+    return res.status(201).json(newPost);
 }
 
 // controller update a blog post
@@ -84,6 +84,7 @@ export const remove = async (req: Request, res: Response) => {
     }
 
     await post.remove();
+    
     return res.status(200).json({ message: 'Post deleted' });
 }
 
