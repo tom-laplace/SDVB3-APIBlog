@@ -3,7 +3,7 @@ import { createProfile, getProfile, removeProfile, updateProfile } from './contr
 
 const router = Router();
 
-router.post('/', createProfile);
+router.post('/:id', createProfile);
 router.get('/:id', getProfile);
 router.put('/:id', updateProfile);
 router.delete('/:id', removeProfile);

@@ -28,7 +28,7 @@ passport.use(
           if (!user) {
             return done(null, false, { message: "Incorrect email." });
           }
-          if (!user.validPassword(password)) {
+          if (!validPassword(password, user)) {
             return done(null, false, { message: "Incorrect password." });
           }
           return done(null, user);
@@ -36,6 +36,10 @@ passport.use(
       }
     )
   );
+
+  function validPassword(password: string, obj: {password: string}) {
+    return bcrypt.compareSync(password, obj.password);
+  }
 
   const getUserProfile = async (token: string) => {
     try {

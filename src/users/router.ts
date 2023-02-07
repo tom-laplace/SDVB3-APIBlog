@@ -1,7 +1,7 @@
 // route de login et de register
 
 import { Router } from 'express';
-import { login, register, updateRole, getAll, getOne, remove } from './controller';
+import { login, register, updateRole, getAll, getOne, remove, getProfile } from './controller';
 
 const router = Router();
 
@@ -16,5 +16,7 @@ router.get('/', getAll);
 router.get('/:id', getOne);
 
 router.delete('/:id', remove);
+
+router.get('/profile', getProfile);
 
 export default router;
