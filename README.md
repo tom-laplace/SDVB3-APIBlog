@@ -7,8 +7,9 @@ Simple API d'un blog basique avec Users, Posts et Comments.
 ### Run le projet
 
 ``` docker-compose up ```
+``` npm run build && npm run start```
 
-API Disponible sur le port 4005 (http://localhost:4005)
+API Disponible sur le port 4004 (http://localhost:4004)
 
 ### Cas de production 
 
