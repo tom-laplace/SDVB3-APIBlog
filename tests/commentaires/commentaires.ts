@@ -3,13 +3,15 @@ import chaiHttp from "chai-http";
 import app from "../../src/server";
 import Post from "../../src/posts/model";
 import User from "../../src/users/model";
+import Commentaire from "../../src/commentaires/model";
 
 const expect = chai.expect;
 chai.use(chaiHttp);
 
-describe("Blog Posts Controller", () => {
+describe("Commentaires Controller", () => {
   let testPost: any;
   let testUser: any;
+  let testCommentaire: any;
 
   beforeEach(async () => {
     testUser = await User.create({
@@ -17,89 +19,95 @@ describe("Blog Posts Controller", () => {
       email: "test@test.com",
       password: "testpassword",
     });
+
     testPost = await Post.create({
       title: "Test Post Title",
       content: "Test Post Content",
       auteur: testUser._id,
     });
+
+    testCommentaire = await Commentaire.create({
+      content: "Test Commentaire Content",
+      auteur: testUser._id,
+      post: testPost._id,
+    });
   });
 
   afterEach(async () => {
+    await Commentaire.deleteMany({});
     await Post.deleteMany({});
     await User.deleteMany({});
   });
 
   describe("getAll", () => {
-    it("should return all blog posts", (done) => {
+    it("should return all commentaires", (done) => {
       chai
         .request(app)
-        .get("/posts")
+        .get("/commentaires")
         .end((err, res) => {
           expect(res).to.have.status(200);
           expect(res.body).to.be.an("array");
-          expect(res.body[0].title).to.equal("Test Post Title");
+          expect(res.body[0].content).to.equal("Test Commentaire Content");
           done();
         });
     });
   });
 
   describe("getOne", () => {
-    it("should return one blog post by id", (done) => {
+    it("should return one commentaire by id", (done) => {
       chai
         .request(app)
-        .get(`/posts/${testPost._id}`)
+        .get(`/commentaires/${testCommentaire._id}`)
         .end((err, res) => {
           expect(res).to.have.status(200);
           expect(res.body).to.be.an("object");
-          expect(res.body.title).to.equal("Test Post Title");
+          expect(res.body.content).to.equal("Test Commentaire Content");
           done();
         });
     });
   });
 
   describe("create", () => {
-    it("should create a new blog post", (done) => {
+    it("should create a new commentaire", (done) => {
       chai
         .request(app)
-        .post("/posts")
+        .post("/commentaires")
         .send({
-          title: "New Test Post Title",
-          content: "New Test Post Content",
+          content: "Test Commentaire Content",
           auteur: testUser._id,
+          post: testPost._id,
         })
         .end((err, res) => {
-          expect(res).to.have.status(201);
+          expect(res).to.have.status(200);
           expect(res.body).to.be.an("object");
-          expect(res.body.title).to.equal("New Test Post Title");
+          expect(res.body.content).to.equal("Test Commentaire Content");
           done();
         });
     });
   });
 
   describe("update", () => {
-    it("should update a blog post", (done) => {
+    it("should update a commentaire by id", (done) => {
       chai
         .request(app)
-        .put(`/posts/${testPost._id}`)
+        .put(`/commentaires/${testCommentaire._id}`)
         .send({
-          title: "Updated Test Post Title",
-          content: "Updated Test Post Content",
-          auteur: testUser._id,
+          content: "Updated Commentaire Content",
         })
         .end((err, res) => {
           expect(res).to.have.status(200);
           expect(res.body).to.be.an("object");
-          expect(res.body.title).to.equal("Updated Test Post Title");
+          expect(res.body.content).to.equal("Updated Commentaire Content");
           done();
         });
     });
   });
 
   describe("delete", () => {
-    it("should delete a blog post", (done) => {
+    it("should delete a commentaire by id", (done) => {
       chai
         .request(app)
-        .delete(`/posts/${testPost._id}`)
+        .delete(`/commentaires/${testCommentaire._id}`)
         .end((err, res) => {
           expect(res).to.have.status(200);
           done();
@@ -107,15 +115,29 @@ describe("Blog Posts Controller", () => {
     });
   });
 
-  describe("getAllByUser", () => {
-    it("should return all blog posts by user", (done) => {
+  describe("getByPost", () => {
+    it("should return all commentaires by post id", (done) => {
       chai
         .request(app)
-        .get(`/posts/user/${testUser._id}`)
+        .get(`/commentaires/post/${testPost._id}`)
         .end((err, res) => {
           expect(res).to.have.status(200);
           expect(res.body).to.be.an("array");
-          expect(res.body[0].title).to.equal("Test Post Title");
+          expect(res.body[0].content).to.equal("Test Commentaire Content");
+          done();
+        });
+    });
+  });
+
+  describe("getByUser", () => {
+    it("should return all commentaires by user id", (done) => {
+      chai
+        .request(app)
+        .get(`/commentaires/user/${testUser._id}`)
+        .end((err, res) => {
+          expect(res).to.have.status(200);
+          expect(res.body).to.be.an("array");
+          expect(res.body[0].content).to.equal("Test Commentaire Content");
           done();
         });
     });
