@@ -50,6 +50,11 @@ export const create = async (req: Request, res: Response) => {
 
     // create new comment
     const newComment = await Commentaire.create({ content, auteur, post });
+
+    if(newComment){
+            post.commentsCount = post.commentsCount + 1;
+            await post.save();
+    }
     
     // return comment
     return res.status(200).json(newComment);
@@ -96,6 +101,7 @@ export const update = async (req: Request, res: Response) => {
 // controller delete a comment
 export const remove = async (req: Request, res: Response) => {
     const { id } = req.params;
+    const { post } = req.body;
 
     const commentaire = await Commentaire.findById(id);
 
@@ -104,6 +110,8 @@ export const remove = async (req: Request, res: Response) => {
     }
 
     await commentaire.remove();
+    post.commentsCount = post.commentsCount - 1;
+    await post.save();
 
     return res.status(200).json({ message: 'Comment deleted' });
 }

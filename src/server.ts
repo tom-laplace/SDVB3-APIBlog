@@ -4,12 +4,14 @@ import userRouter from "./users/router";
 import postsRouter from "./posts/router";
 import commentaireRouter from "./commentaires/router";
 import profileRouter from "./profile/router";
+import cors from "cors";
 
 
 connectToMongoDB();
 
 const app = express();
 
+app.use(cors());
 app.use(express.json());
 app.use("/users", userRouter);
 app.use("/posts", postsRouter);

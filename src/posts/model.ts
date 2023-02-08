@@ -9,6 +9,7 @@ export interface Post extends Document {
     content: string;
     auteur: User;
     createdAt: Date;
+    commentsCount: number;
 }
 
 const PostSchema = new Schema({
@@ -28,6 +29,10 @@ const PostSchema = new Schema({
     createdAt: {
         type: Date,
         default: Date.now,
+    },
+    commentsCount: {
+        type: Number,
+        default: 0,
     },
 });
 
