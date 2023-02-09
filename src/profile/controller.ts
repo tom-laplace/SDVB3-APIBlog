@@ -1,7 +1,7 @@
 // Controller for the profile page
 
 import { Request, Response } from 'express';
-import Profile from './model';
+import Profile from './profileModel';
 
 export const createProfile = async (req: Request, res: Response) => {
     const { username, bio } = req.body;

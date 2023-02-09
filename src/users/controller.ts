@@ -4,7 +4,7 @@ import bcrypt from 'bcryptjs';
 import passport from 'passport';
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
-import Profile from '../profile/model';
+import Profile from '../profile/model/profileModel';
 
 dotenv.config();
 
