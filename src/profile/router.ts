@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { hasRights } from 'src/users/auth/middleware';
+import { hasRights } from '../users/auth/middleware';
 import { createProfile, getProfile, removeProfile, updateProfile } from './controller';
 
 const router = Router();

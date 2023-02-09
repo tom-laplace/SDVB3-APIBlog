@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { hasRights, isAdmin } from 'src/users/auth/middleware';
+import { hasRights, isAdmin } from '../users/auth/middleware';
 import { getAll, getOne, create, update, remove, getAllByUser, getAllByPost } from './controller';
 
 const router = Router();
