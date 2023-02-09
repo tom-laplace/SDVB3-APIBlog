@@ -8,7 +8,7 @@ router.post('/login', login);
 
 router.post('/register', register);
 
-router.put('/:id', verifyToken, isAdmin, updateRole);
+router.put('/:id', isAdmin, updateRole);
 
 router.get('/', getAll);
 

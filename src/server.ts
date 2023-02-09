@@ -5,7 +5,7 @@ import postsRouter from "./posts/router";
 import commentaireRouter from "./commentaires/router";
 import profileRouter from "./profile/router";
 import cors from "cors";
-import * as expressJwt from 'express-jwt';
+import { verifyToken } from "./users/auth/middleware";
 
 
 connectToMongoDB();
@@ -16,9 +16,9 @@ app.use(cors());
 app.use(express.json());
 
 app.use("/users", userRouter);
-app.use("/posts", postsRouter);
-app.use("/commentaires", commentaireRouter);
-app.use("/profile", profileRouter);
+app.use("/posts", verifyToken, postsRouter);
+app.use("/commentaires", verifyToken, commentaireRouter);
+app.use("/profile", verifyToken, profileRouter);
 
 app.get("/", (req, res) => {
   res.send("Hello World!");
