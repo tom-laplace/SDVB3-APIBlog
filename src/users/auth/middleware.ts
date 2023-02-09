@@ -42,3 +42,18 @@ export const isAdmin = async (req: Request, res: Response, next: NextFunction) =
     }
     next();
 };
+
+export const hasRights = async (req: Request, res: Response, next: NextFunction) => {
+    const user_decoded = (req as RequestWithUser).user;
+
+    const user = await User.findById(user_decoded.id);
+
+    if(!user) {
+        return res.status(404).send("User not found");
+    }
+
+    if (user.role !== "admin" && user.id !== req.params.id) {
+        return res.status(403).send("You don't have the rights");
+    }
+    next();
+}
