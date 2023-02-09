@@ -6,6 +6,7 @@ import { Schema, Document, model } from "mongoose";
 export interface Person extends Document {
     firstname: string;
     lastname: string;
+    profile: typeof Profile;
 }
 
 const PersonSchema = new Schema(
@@ -18,6 +19,11 @@ const PersonSchema = new Schema(
         lastname: {
             type: String,
             required: true,
+        },
+
+        profile: {
+            type: Schema.Types.ObjectId,
+            ref: "Profile",
         },
     }
 );

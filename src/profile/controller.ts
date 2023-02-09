@@ -1,75 +1,51 @@
-// Controller for the profile page
+import { Request, Response } from "express";
+import Profile from "./model/profileModel";
+import User from "../users/model";
+import Company from "./model/companyModel";
+import Person from "./model/personModel";
 
-import { Request, Response } from 'express';
-import Profile from './model/profileModel';
+export const createPerson = async (req: Request, res: Response) => {
+    try {
+        const person = new Person({
+            firstname: req.body.firstname,
+            lastname: req.body.lastname,
+            username: req.body.username,
+            avatar: req.body.avatar,
+            bio: req.body.bio,
+            user: req.body.user,
+        });
 
-export const createProfile = async (req: Request, res: Response) => {
-    const { username, bio } = req.body;
-    const { id } = req.params;
-
-    const userExists = await Profile.findOne({ user: id });
-
-    if (!userExists) {
-        return res.status(400).json({ message: "User don't exists" });
+        const createdPerson = await person.save();
+        res.status(201).send(createdPerson);
+    } catch (error: any) {
+        res.status(400).send({ error: error.message });
     }
+};
 
-    const profile = await Profile.create({
-        username,
-        bio,
-        user: id,
-    });
+export const createCompany = async (req: Request, res: Response) => {
+    try {
+        const company = new Company({
+            name: req.body.name,
+            avatar: req.body.avatar,
+            bio: req.body.bio,
+            user: req.body.user,
+        });
 
-    return res.status(200).json(profile);
-}
-
-export const updateProfile = async (req: Request, res: Response) => {
-    const { username, bio, avatar } = req.body;
-    const { id } = req.params;
-
-    const profile = await Profile.findOne({ user: id });
-
-    if (!profile) {
-        return res.status(400).json({ message: 'Profile not found' });
+        const createdCompany = await company.save();
+        res.status(201).send(createdCompany);
+    } catch (error: any) {
+        res.status(400).send({ error: error.message });
     }
+};
 
-    profile.username = username;
-    profile.bio = bio;
-    profile.avatar = avatar;
-
-    await profile.save();
-
-    return res.status(200).json(profile);
-}
-
-export const getProfile = async (req: Request, res: Response) => {
-    const { id } = req.params;
-
-    const profile = await Profile.findOne({ user: id });
-
-    if (!profile) {
-        return res.status(400).json({ message: 'Profile not found' });
+export const getAllProfilFromUser = async (req: Request, res: Response) => {
+    try {
+        const user = await User.findById(req.params.id);
+        const profile = await Profile.findOne({ user: user });
+        const persons = await Person.find({ profile: profile });
+        const companies = await Company.find({ profile: profile });
+        res.status(200).send({ persons, companies });
+    } catch (error: any) {
+        res.status(400).send({ error: error.message });
     }
-
-    return res.status(200).json(profile);
-}
-
-export const removeProfile = async (req: Request, res: Response) => {
-    const { id } = req.params;
-
-    const profile = await Profile.findOne({ user: id });
-
-    if (!profile) {
-        return res.status(400).json({ message: 'Profile not found' });
-    }
-
-    await profile.remove();
-
-    return res.status(200).json({ message: 'Profile removed' });
-}
-
-export default {
-    createProfile,
-    updateProfile,
-    getProfile,
-    removeProfile,
 };
