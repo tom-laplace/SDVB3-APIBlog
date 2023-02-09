@@ -16,7 +16,7 @@ export const getAll = async (req: Request, res: Response) => {
 export const getOne = async (req: Request, res: Response) => {
     const { id } = req.params;
 
-    const commentaire = await Commentaire.findById(id);
+    const commentaire = await Commentaire.findOne({ id: id });
 
     if (!commentaire) {
         return res.status(400).json({ message: 'Comment not found' });
@@ -32,7 +32,7 @@ export const create = async (req: Request, res: Response) => {
 
     // check if user exists
     if(auteur) {
-        const user = await User.findById(auteur);
+        const user = await User.findOne({ id: auteur });
 
         if (!user) {
             return res.status(400).json({ message: 'User not found' });
@@ -41,7 +41,7 @@ export const create = async (req: Request, res: Response) => {
 
     // check if post exists
     if(post) {
-        const postExists = await Post.findById(post);
+        const postExists = await Post.findOne({ id: post });
 
         if (!postExists) {
             return res.status(400).json({ message: 'Post not found' });
@@ -64,7 +64,7 @@ export const create = async (req: Request, res: Response) => {
 export const update = async (req: Request, res: Response) => {
     const { id } = req.params;
 
-    const commentaire = await Commentaire.findById(id);
+    const commentaire = await Commentaire.findOne({ id: id });
 
     if (!commentaire) {
         return res.status(400).json({ message: 'Comment not found' });
@@ -74,7 +74,7 @@ export const update = async (req: Request, res: Response) => {
 
     // check if user exists
     if(auteur) {
-        const user = await User.findById(auteur);
+        const user = await User.findOne({ id: auteur });
 
         if (!user) {
             return res.status(400).json({ message: 'User not found' });
@@ -83,7 +83,7 @@ export const update = async (req: Request, res: Response) => {
 
     // check if post exists
     if(post) {
-        const postExists = await Post.findById(post);
+        const postExists = await Post.findOne({ id: post });
 
         if (!postExists) {
             return res.status(400).json({ message: 'Post not found' });
@@ -103,7 +103,7 @@ export const remove = async (req: Request, res: Response) => {
     const { id } = req.params;
     const { post } = req.body;
 
-    const commentaire = await Commentaire.findById(id);
+    const commentaire = await Commentaire.findOne({ id: id });
 
     if (!commentaire) {
         return res.status(400).json({ message: 'Comment not found' });
@@ -120,7 +120,7 @@ export const remove = async (req: Request, res: Response) => {
 export const getAllByPost = async (req: Request, res: Response) => {
     const { id } = req.params;
 
-    const post = await Post.findById(id);
+    const post = await Post.findOne({ id: id });
 
     if (!post) {
         return res.status(400).json({ message: 'Post not found' });
@@ -135,7 +135,7 @@ export const getAllByPost = async (req: Request, res: Response) => {
 export const getAllByUser = async (req: Request, res: Response) => {
     const { id } = req.params;
 
-    const user = await User.findById(id);
+    const user = await User.findOne({ id: id });
 
     if (!user) {
         return res.status(400).json({ message: 'User not found' });

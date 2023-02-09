@@ -1,7 +1,9 @@
 import { Schema, Document, model } from "mongoose";
 import { User } from "../users/model";
+import * as uuidv4 from "uuid";
 
 export interface Profile extends Document {
+    id: string;
     username: string;
     avatar: string;
     bio: string;
@@ -9,6 +11,10 @@ export interface Profile extends Document {
 }
 
 const ProfileSchema = new Schema({
+    id: {
+        type: String,
+        default: uuidv4.v4,
+    },
     username: {
         type: String,
         required: true,

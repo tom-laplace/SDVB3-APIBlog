@@ -3,8 +3,10 @@
 import { Schema, model, Document } from 'mongoose';
 import { User } from '../users/model';
 import { Post } from '../posts/model';
+import * as uuidv4 from 'uuid';
 
 export interface Commentaire extends Document {
+    id: string;
     content: string;
     auteur: User;
     post: Post;
@@ -12,6 +14,10 @@ export interface Commentaire extends Document {
 }
 
 const CommentaireSchema = new Schema({
+    id: {
+        type: String,
+        default: uuidv4.v4,
+    },
     content: {
         type: String,
         required: true,

@@ -3,8 +3,10 @@
 
 import { Schema, model, Document } from 'mongoose';
 import { User } from 'src/users/model';
+import * as uuidv4 from 'uuid';
 
 export interface Post extends Document {
+    id: string;
     title: string;
     content: string;
     auteur: User;
@@ -13,6 +15,10 @@ export interface Post extends Document {
 }
 
 const PostSchema = new Schema({
+    id: {
+        type: String,
+        default: uuidv4.v4,
+    },
     title: {
         type: String,
         required: true,

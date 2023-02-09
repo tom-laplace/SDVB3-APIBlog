@@ -16,7 +16,7 @@ export const getAll = async (req: Request, res: Response) => {
 export const getOne = async (req: Request, res: Response) => {
     const { id } = req.params;
 
-    const post = await Post.findById(id);
+    const post = await Post.findOne({ id: id });
 
     if (!post) {
         return res.status(400).json({ message: 'Post not found' });
@@ -31,7 +31,7 @@ export const create = async (req: Request, res: Response) => {
     const { title, content, auteur } = req.body;
 
     // check if user exists
-    const user = await User.findById(auteur);
+    const user = await User.findOne({ id: auteur });
 
     if (!user) {
         return res.status(400).json({ message: 'User not found' });
@@ -48,7 +48,7 @@ export const create = async (req: Request, res: Response) => {
 export const update = async (req: Request, res: Response) => {
     const { id } = req.params;
 
-    const post = await Post.findById(id);
+    const post = await Post.findOne({ id: id });
 
     if (!post) {
         return res.status(400).json({ message: 'Post not found' });
@@ -57,7 +57,7 @@ export const update = async (req: Request, res: Response) => {
     const { title, content, auteur } = req.body;
 
     // check if user exists
-    const user = await User.findById(auteur);
+    const user = await User.findOne({ id: auteur });
 
     if (!user) {
         return res.status(400).json({ message: 'User not found' });
@@ -77,7 +77,7 @@ export const update = async (req: Request, res: Response) => {
 export const remove = async (req: Request, res: Response) => {
      const { id } = req.params;
 
-    const post = await Post.findById(id);
+    const post = await Post.findOne({ id: id });
 
     if (!post) {
         return res.status(400).json({ message: 'Post not found' });
@@ -92,7 +92,7 @@ export const remove = async (req: Request, res: Response) => {
 export const getAllByUser = async (req: Request, res: Response) => {
     const { id } = req.params;
 
-    const auteur = User.findById(id);
+    const auteur = User.findOne({ id: id });
 
     if (!auteur) {
         return res.status(400).json({ message: 'User not found' });

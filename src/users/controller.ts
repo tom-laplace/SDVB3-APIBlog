@@ -112,7 +112,7 @@ export const register = async (req: Request, res: Response) => {
 export const updateRole = async (req: Request, res: Response) => {
     const { id } = req.params;
     
-    const user = await User.findById(id);
+    const user = await User.findOne({ id: id });
 
     if (!user) {
         return res.status(400).json({ message: 'User not found' });
@@ -154,7 +154,7 @@ export const getAll = async (req: Request, res: Response) => {
 export const getOne = async (req: Request, res: Response) => {
     const { id } = req.params;
 
-    const user = await User.findById(id);
+    const user = await User.findOne({ id: id });
 
     if (!user) {
         return res.status(400).json({ message: 'User not found' });
@@ -166,7 +166,7 @@ export const getOne = async (req: Request, res: Response) => {
 export const remove = async (req: Request, res: Response) => {
     const { id } = req.params;
 
-    const user = await User.findById(id);
+    const user = await User.findOne({ id: id });
 
     if (!user) {
         return res.status(400).json({ message: 'User not found' });
