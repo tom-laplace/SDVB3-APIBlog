@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import { getAll, getOne, create, update, remove, getAllByUser } from './controller';
+import { verifyToken } from '../users/auth/middleware';
 
 const router = Router();
 

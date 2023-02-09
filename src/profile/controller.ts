@@ -1,11 +1,17 @@
 // Controller for the profile page
 
 import { Request, Response } from 'express';
-import Profile from './profileModel';
+import Profile from './model/profileModel';
 
 export const createProfile = async (req: Request, res: Response) => {
     const { username, bio } = req.body;
     const { id } = req.params;
+
+    const userExists = await Profile.findOne({ user: id });
+
+    if (!userExists) {
+        return res.status(400).json({ message: "User don't exists" });
+    }
 
     const profile = await Profile.create({
         username,

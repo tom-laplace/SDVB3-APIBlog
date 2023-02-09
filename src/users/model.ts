@@ -1,5 +1,6 @@
 import { Schema, model, Document } from 'mongoose';
 import * as uuidv4 from 'uuid';
+import * as bcrypt from 'bcryptjs';
 export interface User extends Document {
     id: string;
     email: string;
