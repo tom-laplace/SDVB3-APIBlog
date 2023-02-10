@@ -13,6 +13,7 @@ const UserSchema = new Schema({
         type: String,
         default: uuidv4.v4,
     },
+    
     email: {
         type: String,
         required: true,
@@ -21,7 +22,6 @@ const UserSchema = new Schema({
 
     password: {
         type: String,
-        required: true,
     },
     
     role: {

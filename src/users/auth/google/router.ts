@@ -3,7 +3,7 @@ import passport from "passport";
 import { Request, Response } from "express";
 import { generateJwt } from "../middleware";
 
-import User from "src/users/model";
+import User from "../../model";
 
 const router = Router();
 
