@@ -1,7 +1,8 @@
-import { Request, Response, NextFunction, RequestHandler } from "express";
+import { Request, Response, NextFunction, RequestHandler, json } from "express";
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
 import User from "../model";
+import { Types } from "mongoose";
 
 dotenv.config();
 
@@ -27,13 +28,16 @@ export const verifyToken: RequestHandler = (req, res, next) => {
     return next();
 };
 
-
-export const isAdmin = async (req: Request, res: Response, next: NextFunction) => {
+export const isAdmin = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+) => {
     const user_decoded = (req as RequestWithUser).user;
 
     const user = await User.findById(user_decoded.id);
 
-    if(!user) {
+    if (!user) {
         return res.status(404).send("User not found");
     }
 
@@ -43,12 +47,16 @@ export const isAdmin = async (req: Request, res: Response, next: NextFunction) =
     next();
 };
 
-export const hasRights = async (req: Request, res: Response, next: NextFunction) => {
+export const hasRights = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+) => {
     const user_decoded = (req as RequestWithUser).user;
 
     const user = await User.findById(user_decoded.id);
 
-    if(!user) {
+    if (!user) {
         return res.status(404).send("User not found");
     }
 
@@ -56,8 +64,14 @@ export const hasRights = async (req: Request, res: Response, next: NextFunction)
         return res.status(403).send("You don't have the rights");
     }
     next();
-}
+};
 
 export const generateJwt = (user: any) => {
-return jwt.sign(user, JWT_SECRET, { expiresIn: "7d" });
-}
+
+    return jwt.sign(
+        { id: user.id, email: user.email },
+        JWT_SECRET,
+        { expiresIn: "7d" }
+    );
+
+};

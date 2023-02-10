@@ -32,9 +32,8 @@ export const login = async (req: Request, res: Response) => {
         }
 
         const token = generateJwt(user);
-
-        // Renvoyer le jeton JWT au client
         res.json({ token });
+
     } catch (err) {
         console.error(err);
         res.status(500).json({ error: "Une erreur est survenue" });
