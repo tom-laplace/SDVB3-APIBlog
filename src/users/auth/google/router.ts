@@ -27,6 +27,7 @@ router.get("/callback/success", async (req: Request, res: Response) => {
 
     let user: Object | any = req.user;
     let account: typeof User | null;
+    let status = 200;
 
     try {
         account = await User.findOne({ email: user.email });
@@ -37,8 +38,9 @@ router.get("/callback/success", async (req: Request, res: Response) => {
             });
 
             await user.save();
+            status = 201;
         }
-        return res.status(200).json({ token: generateJwt(user) });
+        return res.status(status).json({ token: generateJwt(user) });
     } catch (err: TypeError | any) {
         res.status(500).json({ message: err.message });
     }
