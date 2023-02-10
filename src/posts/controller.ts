@@ -7,6 +7,8 @@ import User from '../users/model';
 
 // controller get all blog posts
 export const getAll = async (req: Request, res: Response) => {
+    // pagination 
+    const { page, limit } = req.query;
     const posts = await Post.find();
 
     return res.status(200).json(posts);

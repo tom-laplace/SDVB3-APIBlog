@@ -26,7 +26,7 @@ API Disponible sur le port 4004 (http://localhost:4004)
 - [ ] Post.owner = Profile.id
 - [ ] Comment.owner = Profile.id
 - [ ] req.account = Account.id
-- [ ] pagination
+- [ X ] pagination
 
 ⚠️ ATTENTION à la vérification (Profile.owner === Account.id) pour les method "POST, UPDATE, DELETE" ⚠️
 
