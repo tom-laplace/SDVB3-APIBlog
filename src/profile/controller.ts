@@ -4,47 +4,49 @@ import User from "../users/model";
 import Company from "./model/companyModel";
 import Person from "./model/personModel";
 
-export const createPerson = async (req: Request, res: Response) => {
+export const createProfile = async (req: Request, res: Response) => {
+    const { kind, firstname, lastname, username, avatar, bio, user, name } = req.body;
+    
+    let profile;
+
     try {
-        const person = new Person({
-            firstname: req.body.firstname,
-            lastname: req.body.lastname,
-            username: req.body.username,
-            avatar: req.body.avatar,
-            bio: req.body.bio,
-            user: req.body.user,
-        });
+        switch (kind) {
+            case "person":
+                profile = new Person({
+                    firstname: firstname,
+                    lastname: lastname,
+                    username: username,
+                    avatar: avatar,
+                    bio: bio,
+                    user: user,
+                });
+                break;
+            case "company":
+                profile = new Company({
+                    name: name,
+                    username: username,
+                    avatar: avatar,
+                    bio: bio,
+                    user: user,
+                });
+                break;
+            default:
+                return res.status(400).json({ msg: "Invalid kind" });
+        }
 
-        const createdPerson = await person.save();
-        res.status(201).send(createdPerson);
-    } catch (error: any) {
-        res.status(400).send({ error: error.message });
-    }
-};
+        await profile.save();
+        res.status(201).json(profile);
 
-export const createCompany = async (req: Request, res: Response) => {
-    try {
-        const company = new Company({
-            name: req.body.name,
-            avatar: req.body.avatar,
-            bio: req.body.bio,
-            user: req.body.user,
-        });
-
-        const createdCompany = await company.save();
-        res.status(201).send(createdCompany);
-    } catch (error: any) {
-        res.status(400).send({ error: error.message });
+    } catch (err) {
+        res.status(500).json({ msg: err });
     }
 };
 
 export const getAllProfilFromUser = async (req: Request, res: Response) => {
     try {
         const user = await User.findById(req.params.id);
-        const profile = await Profile.findOne({ user: user });
-        const persons = await Person.find({ profile: profile });
-        const companies = await Company.find({ profile: profile });
-        res.status(200).send({ persons, companies });
+        const profiles = await Profile.find({ user: user });
+        res.status(200).send({ profiles });
     } catch (error: any) {
         res.status(400).send({ error: error.message });
     }

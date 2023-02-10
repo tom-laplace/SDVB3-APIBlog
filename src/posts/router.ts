@@ -7,8 +7,8 @@ const router = Router();
 router.get('/', getAll);
 router.get('/:id', getOne);
 router.post('/', create);
-router.put('/:id', hasRights, update);
-router.delete('/:id', hasRights, remove);
+router.put('/:id', update);
+router.delete('/:id', remove);
 router.get('/user/:id', getAllByUser);
 
 export default router;

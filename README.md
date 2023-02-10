@@ -22,7 +22,7 @@ API Disponible sur le port 4004 (http://localhost:4004)
 
 ### Todo 
 
-- [ ] Profile.owner = Account.id
+- [ X ] Profile.owner = Account.id
 - [ ] Post.owner = Profile.id
 - [ ] Comment.owner = Profile.id
 - [ ] req.account = Account.id

@@ -1,12 +1,22 @@
 import { Router } from 'express';
-import { hasRights } from '../users/auth/middleware';
-// import { createProfile, getProfile, removeProfile, updateProfile } from './controller';
+import { getAllProfilFromUser, createProfile } from './controller';
 
 const router = Router();
 
-// router.post('/:id', createProfile);
-// router.get('/:id', getProfile);
-// router.put('/:id', hasRights, updateProfile);
-// router.delete('/:id', hasRights, removeProfile);
+router.get('/user/:id', getAllProfilFromUser);
+
+router.post("/", createProfile);
+
+// @route   GET /
+router.get("/", (req, res) => {});
+
+// @route   GET /:id
+router.get("/:id", (req, res) => {});
+
+// @route   GET /:id/posts
+router.get("/:id/posts", (req, res) => {});
+
+// @route   GET /:id/comments
+router.get("/:id/comments", (req, res) => {});
 
 export default router;
