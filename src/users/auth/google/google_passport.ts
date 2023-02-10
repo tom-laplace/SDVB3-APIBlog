@@ -1,5 +1,6 @@
-import passport from "passport";
+import passport, { Profile } from "passport";
 import dotenv from "dotenv";
+import { Request } from "express";
 
 const GoogleStrategy = require("passport-google-oauth2").Strategy;
 
@@ -14,21 +15,21 @@ passport.use(
             passReqToCallback: true,
         },
         (
-            request: any,
-            accessToken: any,
-            refreshToken: any,
-            profile: any,
-            done: (arg0: null, arg1: any) => any
+            request: Request,
+            accessToken: string,
+            refreshToken: string,
+            profile: object,
+            done: (arg0: null, arg1: Object) => Profile
         ) => {
             return done(null, profile);
         }
     )
 );
 
-passport.serializeUser((user: any, done: (arg0: null, arg1: any) => any) => {
+passport.serializeUser((user: Object, done: (arg0: null, arg1: Object) => any) => {
     done(null, user);
 });
 
-passport.deserializeUser((user: any, done: (arg0: null, arg1: any) => any) => {
+passport.deserializeUser((user: Object, done: (arg0: null, arg1: Object) => any) => {
     done(null, user);
 });

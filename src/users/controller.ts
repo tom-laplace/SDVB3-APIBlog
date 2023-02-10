@@ -1,8 +1,9 @@
 import { Request, Response, NextFunction } from "express";
 import User from "./model";
 import bcrypt from "bcryptjs";
-import dotenv from "dotenv";
 import jwt from "jsonwebtoken";
+import { generateJwt } from "./auth/middleware";
+import dotenv from "dotenv";
 
 dotenv.config();
 
@@ -30,10 +31,7 @@ export const login = async (req: Request, res: Response) => {
                 .json({ error: "email ou mot de passe incorrect" });
         }
 
-        // Générer un jeton JWT
-        const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET || "", {
-            expiresIn: "7d",
-        });
+        const token = generateJwt(user);
 
         // Renvoyer le jeton JWT au client
         res.json({ token });

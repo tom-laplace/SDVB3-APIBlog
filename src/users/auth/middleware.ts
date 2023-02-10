@@ -57,3 +57,7 @@ export const hasRights = async (req: Request, res: Response, next: NextFunction)
     }
     next();
 }
+
+export const generateJwt = (user: any) => {
+return jwt.sign(user, JWT_SECRET, { expiresIn: "7d" });
+}
