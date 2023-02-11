@@ -1,15 +1,15 @@
 // Modèle des commentaires d'un post
 
 import { Schema, model, Document } from 'mongoose';
-import { User } from '../users/model';
+import { Profile } from '../profile/model/profileModel';
 import { Post } from '../posts/model';
 import * as uuidv4 from 'uuid';
 
 export interface Commentaire extends Document {
     id: string;
     content: string;
-    auteur: User;
     post: Post;
+    profile: Profile;
     createdAt: Date;
 }
 
@@ -22,9 +22,9 @@ const CommentaireSchema = new Schema({
         type: String,
         required: true,
     },
-    auteur: {
+    profile: {
         type: Schema.Types.ObjectId,
-        ref: 'User',
+        ref: 'Profile',
         required: true,
     },
     post: {

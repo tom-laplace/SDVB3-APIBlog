@@ -3,13 +3,14 @@
 
 import { Request, Response } from 'express';
 import Post from './model';
-import User from '../users/model';
+import  Profile  from '../profile/model/profileModel';
 
 // controller get all blog posts
 export const getAll = async (req: Request, res: Response) => {
-    // pagination 
     const { page, limit } = req.query;
-    const posts = await Post.find();
+
+    const posts = await Post.find().skip((Number(page) - 1) * Number(limit)).limit(Number(limit));
+
 
     return res.status(200).json(posts);
 }
@@ -30,17 +31,17 @@ export const getOne = async (req: Request, res: Response) => {
 
 // controller create a new blog post
 export const create = async (req: Request, res: Response) => {
-    const { title, content, auteur } = req.body;
+    const { title, content, profile } = req.body;
 
     // check if user exists
-    const user = await User.findOne({ id: auteur });
+    const profil_to_check = await Profile.findById(profile);
 
-    if (!user) {
-        return res.status(400).json({ message: 'User not found' });
+    if (!profil_to_check) {
+        return res.status(400).json({ message: 'Profile not found' });
     }
 
     // create new post
-    const newPost = await Post.create({ title, content, auteur });
+    const newPost = await Post.create({ title, content, profile });
 
     // return post
     return res.status(201).json(newPost);
@@ -56,12 +57,12 @@ export const update = async (req: Request, res: Response) => {
         return res.status(400).json({ message: 'Post not found' });
     }
 
-    const { title, content, auteur } = req.body;
+    const { title, content, profile } = req.body;
 
     // check if user exists
-    const user = await User.findOne({ id: auteur });
+    const profil_to_check = await Profile.findOne({ id: profile });
 
-    if (!user) {
+    if (!profil_to_check) {
         return res.status(400).json({ message: 'User not found' });
     }
 
@@ -91,25 +92,16 @@ export const remove = async (req: Request, res: Response) => {
 }
 
 // controller get all blog posts by user
-export const getAllByUser = async (req: Request, res: Response) => {
+export const getAllByProfile = async (req: Request, res: Response) => {
     const { id } = req.params;
 
-    const auteur = User.findOne({ id: id });
+    const profile = Profile.findOne({ id: id });
 
-    if (!auteur) {
+    if (!profile) {
         return res.status(400).json({ message: 'User not found' });
     }
 
-    const posts = await Post.find({ auteur: id });
+    const posts = await Post.find({ profile: id });
 
     return res.status(200).json(posts);
 }
-
-export default {
-    getAll,
-    getOne,
-    create,
-    update,
-    remove,
-    getAllByUser,
-};

@@ -36,7 +36,7 @@ API Disponible sur le port 4004 (http://localhost:4004)
 - [ ] Ajouter un champ "isPublished" dans le model Comment
 - [ ] Refacto 'any' types 
 - [ ] Refacto imports 
-- [ ] Refacto verif middlewares
+- [ ] Refacto middlewares
 - [ ] Refacto routes as try catch with better error handler
 - [ ] Ecrire tests
 - [ ] Mettre en place déploiement

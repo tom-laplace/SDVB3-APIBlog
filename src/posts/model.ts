@@ -1,15 +1,16 @@
 // modèle du schéma de données pour les posts
 // titre, contenu, auteur, date de création
 
-import { Schema, model, Document } from 'mongoose';
-import { User } from 'src/users/model';
-import * as uuidv4 from 'uuid';
+import { Schema, model, Document } from "mongoose";
+import { Profile } from "../profile/model/profileModel";
+
+import * as uuidv4 from "uuid";
 
 export interface Post extends Document {
     id: string;
     title: string;
     content: string;
-    auteur: User;
+    profile: Profile;
     createdAt: Date;
     commentsCount: number;
 }
@@ -27,9 +28,9 @@ const PostSchema = new Schema({
         type: String,
         required: true,
     },
-    auteur: {
+    profile: {
         type: Schema.Types.ObjectId,
-        ref: 'User',
+        ref: "Profile",
         required: true,
     },
     createdAt: {
@@ -42,5 +43,4 @@ const PostSchema = new Schema({
     },
 });
 
-export default model<Post>('Post', PostSchema);
-
+export default model<Post>("Post", PostSchema);

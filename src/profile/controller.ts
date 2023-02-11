@@ -5,7 +5,7 @@ import Company from "./model/companyModel";
 import Person from "./model/personModel";
 
 export const createProfile = async (req: Request, res: Response) => {
-    const { kind, firstname, lastname, username, avatar, bio, user, name } = req.body;
+    const { kind, firstname, lastname, avatar, bio, user, name } = req.body;
     
     let profile;
 
@@ -15,7 +15,6 @@ export const createProfile = async (req: Request, res: Response) => {
                 profile = new Person({
                     firstname: firstname,
                     lastname: lastname,
-                    username: username,
                     avatar: avatar,
                     bio: bio,
                     user: user,
@@ -24,7 +23,6 @@ export const createProfile = async (req: Request, res: Response) => {
             case "company":
                 profile = new Company({
                     name: name,
-                    username: username,
                     avatar: avatar,
                     bio: bio,
                     user: user,
