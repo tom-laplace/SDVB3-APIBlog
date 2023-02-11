@@ -69,7 +69,7 @@ export const hasRights = async (
 export const generateJwt = (user: any) => {
 
     return jwt.sign(
-        { id: user.id, email: user.email },
+        { id: user.id },
         JWT_SECRET,
         { expiresIn: "7d" }
     );
