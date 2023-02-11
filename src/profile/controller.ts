@@ -49,3 +49,32 @@ export const getAllProfilFromUser = async (req: Request, res: Response) => {
         res.status(400).send({ error: error.message });
     }
 };
+
+export const getProfileByID = async (req: Request, res: Response) => {
+    try {
+        const profile = await Profile.findById(req.params.id);
+        res.status(200).send({ profile });
+    } catch (error: TypeError | any) {
+        res.status(400).send({ error: error.message });
+    }
+};
+
+export const getAll = async (req: Request, res: Response) => {
+    try {
+        const profiles = await Profile.find();
+        res.status(200).send({ profiles });
+    } catch (error: Error | any) {
+        res.status(400).send({ error: error.message });
+    }
+};
+
+export const deleteProfile = async (req: Request, res: Response) => {
+    try {
+        const profile = await Profile.findById(req.params.id);
+        if(!profile) throw new Error("Profile not found");
+        await profile.remove();
+        res.status(200).send({ profile });
+    } catch (error: Error | any) {
+        res.status(400).send({ error: error.message });
+    }
+};
