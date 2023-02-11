@@ -32,7 +32,7 @@ export const login = async (req: Request, res: Response) => {
         }
 
         const token = generateJwt(user);
-        res.json({ token });
+        res.status(200).json({ token });
 
     } catch (err) {
         console.error(err);
