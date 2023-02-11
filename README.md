@@ -23,9 +23,9 @@ API Disponible sur le port 4004 (http://localhost:4004)
 ### Todo 
 
 - [ X ] Profile.owner = Account.id
-- [ ] Post.owner = Profile.id
-- [ ] Comment.owner = Profile.id
-- [ ] req.account = Account.id
+- [ X ] Post.owner = Profile.id
+- [ X ] Comment.owner = Profile.id
+- [  ] req.account = Account.id
 - [ X ] pagination
 
 ⚠️ ATTENTION à la vérification (Profile.owner === Account.id) pour les method "POST, UPDATE, DELETE" ⚠️

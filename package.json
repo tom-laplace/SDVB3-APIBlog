@@ -9,7 +9,7 @@
     "watch": "nodemon --exec ts-node src/server.ts",
     "build": "tsc",
     "start": "node build/server.js",
-    "docker:build": "docker build . -f infra/Dockerfile -t api-blog",
+    "docker:build": "docker build . -f conteneur/Dockerfile -t api-blog",
     "docker:run": "docker run -p 4005:4005 api-blog"
   },
   "repository": {
