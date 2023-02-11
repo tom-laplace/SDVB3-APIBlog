@@ -4,6 +4,7 @@ import { Request, Response } from 'express';
 import Commentaire from './model';
 import User from '../users/model';
 import Post from '../posts/model';
+import Profile from '../profile/model/profileModel';
 
 // controller get all comments
 export const getAll = async (req: Request, res: Response) => {
@@ -28,32 +29,36 @@ export const getOne = async (req: Request, res: Response) => {
 
 // controller create a new comment
 export const create = async (req: Request, res: Response) => {
-    const { content, auteur, post } = req.body;
+    const { content, profile, post } = req.body;
 
-    // check if user exists
-    if(auteur) {
-        const user = await User.findOne({ id: auteur });
+    if(profile) {
+        const profile_to_check = await Profile.findById(profile);
 
-        if (!user) {
-            return res.status(400).json({ message: 'User not found' });
+        if (!profile_to_check) {
+            return res.status(400).json({ message: 'Profile not found' });
         }
     }
 
-    // check if post exists
     if(post) {
-        const postExists = await Post.findOne({ id: post });
+        const postExists = await Post.findById(post);
 
         if (!postExists) {
             return res.status(400).json({ message: 'Post not found' });
         }
     }
 
-    // create new comment
-    const newComment = await Commentaire.create({ content, auteur, post });
 
-    if(newComment){
-            post.commentsCount = post.commentsCount + 1;
-            await post.save();
+    const newComment = await Commentaire.create({ content, profile, post });
+
+    if(newComment && post){
+        
+            const post_related = await Post.findById(post);
+            if(!post_related) return res.status(400).json({ message: 'Post not found' })
+
+
+            post_related.commentsCount = post_related.commentsCount + 1;
+
+            await post_related.save();
     }
     
     // return comment
@@ -70,13 +75,13 @@ export const update = async (req: Request, res: Response) => {
         return res.status(400).json({ message: 'Comment not found' });
     }
 
-    const { content, auteur, post } = req.body;
+    const { content, profile, post } = req.body;
 
     // check if user exists
-    if(auteur) {
-        const user = await User.findOne({ id: auteur });
+    if(profile) {
+        const profile_to_check = await User.findById(profile);
 
-        if (!user) {
+        if (!profile_to_check) {
             return res.status(400).json({ message: 'User not found' });
         }
     }
@@ -132,12 +137,12 @@ export const getAllByPost = async (req: Request, res: Response) => {
 }
 
 // controller get all comments by user
-export const getAllByUser = async (req: Request, res: Response) => {
+export const getAllByProfile = async (req: Request, res: Response) => {
     const { id } = req.params;
 
-    const user = await User.findOne({ id: id });
+    const profil_to_check = await Profile.findById(id);
 
-    if (!user) {
+    if (!profil_to_check) {
         return res.status(400).json({ message: 'User not found' });
     }
 
@@ -153,6 +158,6 @@ export default {
     update,
     remove,
     getAllByPost,
-    getAllByUser,
+    getAllByProfile,
 };
 
